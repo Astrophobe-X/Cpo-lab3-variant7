@@ -40,7 +40,12 @@ def test_aop_type_enforcement_boundary() -> None:
 
 # Property-Based Testing (Hypothesis Generative Invariants)
 @given(
-    st.text(alphabet=st.characters(whitelist_categories=("Nd",)), min_size=1)
+    st.text(
+        alphabet=st.characters(
+            whitelist_categories=("Nd",)  # type: ignore[arg-type]
+        ),
+        min_size=1,
+    )
 )
 def test_pbt_digit_class_invariants(text: str) -> None:
     """Enforces mathematical invariant properties for digits under closure."""
