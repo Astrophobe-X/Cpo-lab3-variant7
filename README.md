@@ -42,17 +42,17 @@ visualization capabilities.
 ## Changelog
 
 - 25.05.2026 - 2
-  - Refactor execution engine to properly support standard prefix
-    matching semantics (`re.match`).
-  - Resolve static typing invariance conflicts by removing unnecessary
-    generic abstractions (`TypeVar` T).
+  Refactor execution engine to properly support standard prefix
+  matching semantics (`re.match`).
+  Resolve static typing invariance conflicts by removing unnecessary
+  generic abstractions (`TypeVar` T).
 - 24.05.2026 - 1
-  - Implement GraphViz visualization export.
-  - Add Hypothesis property-based testing and baseline deterministic
-    unit tests.
+  Implement GraphViz visualization export.
+  Add Hypothesis property-based testing and baseline deterministic
+  unit tests.
 - 23.05.2026 - 0
-  - Initial structure. Implement Thompson's construction and AOP
-    validation decorators.
+  Initial structure. Implement Thompson's construction and AOP
+  validation decorators.
 
 ## Design notes
 
@@ -80,4 +80,3 @@ visualization capabilities.
   `typing.cast` and `@functools.wraps` to bypass type checker metadata loss,
   ensuring that the wrapped API functions retain their exact signatures while
   gaining robust runtime type safety.
-  

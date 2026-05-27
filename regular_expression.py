@@ -45,7 +45,7 @@ def enforce_string_inputs(func: F) -> F:
                 )
         return func(*args, **kwargs)
 
-    # Use cast to satisfy strict static type checkers regarding decorator return
+    # Cast to satisfy strict static type checkers regarding decorator return
     return cast(F, wrapper)
 
 
