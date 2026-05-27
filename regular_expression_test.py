@@ -38,7 +38,7 @@ def test_aop_type_enforcement_boundary() -> None:
         engine.match(42)  # type: ignore
 
 
-# Property-Based Testing (Hypothesis Generative Invariants)
+# Property-Based Testing
 @given(
     st.text(
         alphabet=st.characters(

@@ -226,7 +226,6 @@ class RegexInterpreter:
             {self.start_fragment.start_state}
         )
 
-        # Record match success if empty string satisfies the condition
         match_found = any(s.is_accepting for s in current_states)
 
         for char in text:
@@ -241,8 +240,75 @@ class RegexInterpreter:
 
             current_states = self._get_epsilon_closure(next_states)
 
-            # If the FSM enters an accepting state at any prefix step, lock it
             if any(s.is_accepting for s in current_states):
                 match_found = True
 
         return match_found
+
+    # 4. Automation Model Visualization Implementation
+    def visualize(self) -> str:
+        """Generates legal GraphViz DOT code for the NFA state diagram."""
+        dot_lines = [
+            "digraph G {",
+            "    rankdir=LR;",
+            "    node [shape=circle];",
+        ]
+        accept_states = [s for s in self._all_states if s.is_accepting]
+
+        # Explicitly declare accepting double-circle states
+        if accept_states:
+            labels = " ".join([f"n_{s.state_id}" for s in accept_states])
+            dot_lines.append(f"    node [shape=doublecircle]; {labels};")
+            dot_lines.append("    node [shape=circle];")
+
+        # Populate structural transitions across vectors
+        for state in self._all_states:
+            for dest, matcher in state.transitions:
+                label = getattr(
+                    matcher, "char", getattr(matcher, "class_type", "?")
+                )
+                if label == "\\":
+                    label = "\\\\"
+                dot_lines.append(
+                    f"    n_{state.state_id} -> n_{dest.state_id} "
+                    f'[label="{label}"];'
+                )
+            for dest in state.epsilon_transitions:
+                dot_lines.append(
+                    f"    n_{state.state_id} -> n_{dest.state_id} "
+                    '[label="&epsilon;"];'
+                )
+        dot_lines.append("}")
+        return "\n".join(dot_lines)
+
+    def generate_transition_table(self) -> str:
+        """Generates a text-formatted State Transition Table for the FSM."""
+        table_lines = [
+            f"State Transition Table for Regex Pattern: '{self.pattern}'",
+            "-" * 65,
+            f"{'Source State':<15} | {'Trigger / Matcher':<25} | {'Target State'}",
+            "-" * 65,
+        ]
+
+        for state in self._all_states:
+            state_label = f"State {state.state_id}"
+            if state.is_accepting:
+                state_label += " (Accept)"
+
+            # Print standard token-driven edges
+            for dest, matcher in state.transitions:
+                trigger = getattr(
+                    matcher, "char", getattr(matcher, "class_type", "?")
+                )
+                trigger_label = f"Symbol: '{trigger}'"
+                table_lines.append(
+                    f"{state_label:<15} | {trigger_label:<25} | State {dest.state_id}"
+                )
+
+            # Print zero-cost instantaneous links
+            for dest in state.epsilon_transitions:
+                table_lines.append(
+                    f"{state_label:<15} | {'Epsilon (ε)':<25} | State {dest.state_id}"
+                )
+
+        return "\n".join(table_lines)

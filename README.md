@@ -17,6 +17,10 @@ visualization capabilities.
   deterministic unit tests (pytest) validating prefix matching semantics,
   and Property-Based Tests (PBT) using Hypothesis to guarantee mathematical
   invariants and engine stability.
+- `gen_graph_table.py` -- Execution artifact utility script. Instantiates the
+  interpreter to parse a designated regular expression pattern, then extracts
+  and prints both the GraphViz DOT code layout and the text-formatted State
+  Transition Table directly to the console output.
 
 ## Features
 
@@ -80,3 +84,29 @@ visualization capabilities.
   `typing.cast` and `@functools.wraps` to bypass type checker metadata loss,
   ensuring that the wrapped API functions retain their exact signatures while
   gaining robust runtime type safety.
+
+## Model Visualization and Transparent Outputs
+
+The project satisfies transparency requirements through two distinct,
+decoupled output tracking mechanisms:
+
+### 1. State Diagram (GraphViz DOT Code)
+
+Calling the `visualize()` method generates compliant GraphViz DOT notation syntax
+outlining the FSM topology. Accepting configurations are highlighted
+as `doublecircle` geometry targets, regular nodes as standard `circle` objects,
+and instantaneous free routes as `&epsilon;` values.
+
+### 2. State Transition Table
+
+Calling the `generate_transition_table()` method produces a human-readable, text-
+formatted grid detailing every deterministic symbol-driven edge and non-
+deterministic empty epsilon hop registered across the NFA state space.
+
+### How to Generate and Render Visualizations
+
+Execute the dedicated utility script via the shell to output the FSM models
+
+```bash
+python gen_graph_table.py
+```
