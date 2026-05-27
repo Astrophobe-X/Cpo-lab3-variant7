@@ -286,7 +286,8 @@ class RegexInterpreter:
         table_lines = [
             f"State Transition Table for Regex Pattern: '{self.pattern}'",
             "-" * 65,
-            f"{'Source State':<15} | {'Trigger / Matcher':<25} | {'Target State'}",
+            f"{'Source State':<15} | {'Trigger / Matcher':<25} | "
+            f"{'Target State'}",
             "-" * 65,
         ]
 
@@ -302,13 +303,15 @@ class RegexInterpreter:
                 )
                 trigger_label = f"Symbol: '{trigger}'"
                 table_lines.append(
-                    f"{state_label:<15} | {trigger_label:<25} | State {dest.state_id}"
+                    f"{state_label:<15} | {trigger_label:<25} | "
+                    f"State {dest.state_id}"
                 )
 
             # Print zero-cost instantaneous links
             for dest in state.epsilon_transitions:
                 table_lines.append(
-                    f"{state_label:<15} | {'Epsilon (ε)':<25} | State {dest.state_id}"
+                    f"{state_label:<15} | {'Epsilon (ε)':<25} | "
+                    f"State {dest.state_id}"
                 )
 
         return "\n".join(table_lines)
